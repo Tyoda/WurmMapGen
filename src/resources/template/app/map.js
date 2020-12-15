@@ -90,11 +90,25 @@ WurmMapGen.map = {
 				{icon: WurmMapGen.markers.getMarker('village', village)}
 			);
 
+			var citizenNamesString = ' (';
+			if (village.citizens >= 10){
+				 citizenNamesString += village.citizenNames.slice(0, 10).join(', ') + '...';
+			}
+			else {
+				citizenNamesString += village.citizenNames.join(', ');
+			}
+			citizenNamesString += ')';
+			
+			if (village.citizens == 0){
+				citizenNamesString = '';
+			}
+			
 			marker.bindPopup([
 				'<div align="center"><b>' + escapeHtml(village.name) + '</b>',
 				'<i>' + escapeHtml(village.motto) + '</i></div>',
 				'<b>Mayor:</b> ' + escapeHtml(village.mayor),
 				'<b>Citizens:</b> ' + escapeHtml(village.citizens)
+				+ escapeHtml(citizenNamesString)
 				].join('<br>'));
 
 			// Make sure text labels always show on top of other markers
