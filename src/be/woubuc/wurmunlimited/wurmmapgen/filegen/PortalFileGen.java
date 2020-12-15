@@ -3,8 +3,8 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
 import be.woubuc.wurmunlimited.wurmmapgen.database.Portal;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -40,11 +40,11 @@ public final class PortalFileGen extends FileGen {
 			portalData.put("x", portal.getPosX());
 			portalData.put("y", portal.getPosY());
 			
-			data.add(portalData);
+			data.put(portalData);
 		}
 		
 		dataObject.put("portals", data);
 		
-		return dataObject.toJSONString();
+		return dataObject.toString();
 	}
 }
