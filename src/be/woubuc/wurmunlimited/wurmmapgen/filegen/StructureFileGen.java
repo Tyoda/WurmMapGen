@@ -2,31 +2,29 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
-import be.woubuc.wurmunlimited.wurmmapgen.database.Structure;
+import be.woubuc.wurmunlimited.wurmmapgen.database.Village;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public final class StructureFileGen extends FileGen {
+public final class VillageFileGen extends FileGen {
 	
-	public StructureFileGen() {
-		setFilePath(Paths.get(WurmMapGen.dataPath, "structures.json"));
+	public VillageFileGen() {
+		setFilePath(Paths.get(WurmMapGen.dataPath, "villages.json"));
 	}
-	/**
-	 * Generates a JSON file containing all structures on the server, and writes it to the given file path.
-	 */
-	@Override
+	
 	@SuppressWarnings("unchecked")
 	protected String generateData() {
-		Logger.title("Structure data");
+		Logger.title("Village data");
 		
-		// Load data
-		ArrayList<Structure> structures = WurmMapGen.db.getStructures();
+		// Load list of villages
+		ArrayList<Village> villages = WurmMapGen.db.getVillages();
 		
-		if (structures.size() == 0) {
-			Logger.custom("SKIP", "No structures found");
+		// Stop right here if there are no villages on the server
+		if (villages.size() == 0) {
+			Logger.custom("SKIP", "No villages found");
 			return null;
 		}
 		
@@ -34,27 +32,36 @@ public final class StructureFileGen extends FileGen {
 		JSONObject dataObject = new JSONObject();
 		JSONArray data = new JSONArray();
 		
-		JSONObject structureData;
-		JSONArray structureBorders;
-		for (Structure structure : structures) {
-			structureData = new JSONObject();
-			structureBorders = new JSONArray();
+		JSONObject deedData;
+		JSONArray deedBorders;
+		
+		for (final Village village : villages) {
+			deedData = new JSONObject();
+			deedBorders = new JSONArray();
 			
-			// Add borders to JSON data
-			structureBorders.put(structure.getMinX());
-			structureBorders.put(structure.getMinY());
-			structureBorders.put(structure.getMaxX());
-			structureBorders.put(structure.getMaxY());
-			structureData.put("borders", structureBorders);
+			deedBorders.put(village.getStartX());
+			deedBorders.put(village.getStartY());
+			deedBorders.put(village.getEndX());
+			deedBorders.put(village.getEndY());
+			deedData.put("borders", deedBorders);
 			
-			// Add creator to JSON data
-			structureData.put("name", structure.getStructureName());
-			structureData.put("creator", structure.getOwnerName());
-			data.put(structureData);
+			deedData.put("name", village.getVillageName());
+			deedData.put("motto", village.getMotto());
+			deedData.put("permanent", village.isPermanent());
+			
+			deedData.put("x", village.getTokenX() + 0.5);
+			deedData.put("y", village.getTokenY() + 0.5);
+			
+			deedData.put("mayor", village.getMayorName());
+			deedData.put("citizenCount", village.getCitizenCount());
+			deedData.put("citizenNames", village.getCitizenNames());
+			
+			data.put(deedData);
 		}
 		
-		dataObject.put("structures", data);
+		dataObject.put("villages", data);
 		
 		return dataObject.toString();
 	}
+	
 }
