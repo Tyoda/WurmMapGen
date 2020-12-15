@@ -1,8 +1,9 @@
-# WurmMapGen
-Interactive tile map generator for Wurm Unlimited servers.
 ## How this branch is different
 I added a feature that shows the citizens' names + the background of the map is blue!
 I am still far from getting used to both github and java-which is why I don't do a pull request--
+
+# WurmMapGen
+Interactive tile map generator for Wurm Unlimited servers.
 ![Screenshot](screenshot.png)
 
 ## Features
