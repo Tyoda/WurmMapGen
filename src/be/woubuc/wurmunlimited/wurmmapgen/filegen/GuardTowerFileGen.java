@@ -3,8 +3,8 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
 import be.woubuc.wurmunlimited.wurmmapgen.database.GuardTower;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
@@ -43,10 +43,10 @@ public final class GuardTowerFileGen extends FileGen {
 			towerData = new JSONObject();
 			towerBorders = new JSONArray();
 			
-			towerBorders.add(guardTower.getMinX());
-			towerBorders.add(guardTower.getMinY());
-			towerBorders.add(guardTower.getMaxX());
-			towerBorders.add(guardTower.getMaxY());
+			towerBorders.put(guardTower.getMinX());
+			towerBorders.put(guardTower.getMinY());
+			towerBorders.put(guardTower.getMaxX());
+			towerBorders.put(guardTower.getMaxY());
 			towerData.put("borders", towerBorders);
 			
 			towerData.put("x", guardTower.getPosX());
@@ -56,11 +56,11 @@ public final class GuardTowerFileGen extends FileGen {
 			towerData.put("ql", decimalFormat.format(guardTower.getQl()));
 			towerData.put("dmg", decimalFormat.format(guardTower.getDmg()));
 			
-			data.add(towerData);
+			data.put(towerData);
 		}
 		
 		dataObject.put("guardtowers", data);
 		
-		return dataObject.toJSONString();
+		return dataObject.toString();
 	}
 }
