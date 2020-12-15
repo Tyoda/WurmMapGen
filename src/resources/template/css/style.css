@@ -102,3 +102,7 @@ img {
 	image-rendering: optimize-contrast;
 	-ms-interpolation-mode: nearest-neighbor;
 }
+
+.leaflet-container{
+	background:	#1D4D9C;
+}
