@@ -6,6 +6,7 @@ import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Stack;
 
 public final class Village {
 	
@@ -22,6 +23,7 @@ public final class Village {
 	
 	private boolean permanent;
 	private int citizenCount = 0;
+	private Stack<String> citizenNames = new Stack();
 	
 	private long tokenID;
 	private int tokenX = 0;
@@ -38,6 +40,7 @@ public final class Village {
 	
 	public boolean isPermanent() { return permanent; }
 	public int getCitizenCount() { return citizenCount; }
+	public String[] getCitizenNames() { return citizenNames.toArray( new String[citizenCount] ) ; }
 	
 	public int getTokenX() { return tokenX; }
 	public int getTokenY() { return tokenY; }
@@ -114,7 +117,7 @@ public final class Village {
 	 */
 	private void loadCitizenData() {
 		final String citizenQuery = "select `WURMID` from `CITIZENS` where `VILLAGEID` = ?";
-		final String playerQuery = "select `WURMID` from `PLAYERS` where `WURMID` = ?";
+		final String playerQuery = "select `NAME`, `WURMID` from `PLAYERS` where `WURMID` = ?";
 		
 		// First, get the wurmids from all citizens
 		try (PreparedStatement citizenStatement = WurmMapGen.db.getZones().prepareStatement(citizenQuery, villageID);
@@ -128,6 +131,8 @@ public final class Village {
 					 ResultSet playerResultSet = playerStatement.executeQuery()) {
 					
 					if (playerResultSet.next()) {
+						String citizenName = playerResultSet.getString("NAME");
+						citizenNames.add(citizenName);
 						citizenCount++;
 					}
 					
@@ -135,6 +140,7 @@ public final class Village {
 					Logger.error("Could not load citizen player data: " + e.getMessage());
 				}
 			}
+			
 		} catch (SQLException e) {
 			Logger.error("Could not load citizen data: " + e.getMessage());
 		}
