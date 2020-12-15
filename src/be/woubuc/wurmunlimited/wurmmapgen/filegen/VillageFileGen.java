@@ -3,8 +3,8 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
 import be.woubuc.wurmunlimited.wurmmapgen.database.Village;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,10 +39,10 @@ public final class VillageFileGen extends FileGen {
 			deedData = new JSONObject();
 			deedBorders = new JSONArray();
 			
-			deedBorders.add(village.getStartX());
-			deedBorders.add(village.getStartY());
-			deedBorders.add(village.getEndX());
-			deedBorders.add(village.getEndY());
+			deedBorders.put(village.getStartX());
+			deedBorders.put(village.getStartY());
+			deedBorders.put(village.getEndX());
+			deedBorders.put(village.getEndY());
 			deedData.put("borders", deedBorders);
 			
 			deedData.put("name", village.getVillageName());
@@ -54,13 +54,14 @@ public final class VillageFileGen extends FileGen {
 			
 			deedData.put("mayor", village.getMayorName());
 			deedData.put("citizens", village.getCitizenCount());
+			deedData.put("citizenNames", new JSONArray(village.getCitizenNames()));
 			
-			data.add(deedData);
+			data.put(deedData);
 		}
 		
 		dataObject.put("villages", data);
 		
-		return dataObject.toJSONString();
+		return dataObject.toString();
 	}
 	
 }
