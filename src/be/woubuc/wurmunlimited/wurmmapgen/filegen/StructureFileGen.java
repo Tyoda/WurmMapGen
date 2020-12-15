@@ -3,8 +3,8 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
 import be.woubuc.wurmunlimited.wurmmapgen.database.Structure;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -41,20 +41,20 @@ public final class StructureFileGen extends FileGen {
 			structureBorders = new JSONArray();
 			
 			// Add borders to JSON data
-			structureBorders.add(structure.getMinX());
-			structureBorders.add(structure.getMinY());
-			structureBorders.add(structure.getMaxX());
-			structureBorders.add(structure.getMaxY());
+			structureBorders.put(structure.getMinX());
+			structureBorders.put(structure.getMinY());
+			structureBorders.put(structure.getMaxX());
+			structureBorders.put(structure.getMaxY());
 			structureData.put("borders", structureBorders);
 			
 			// Add creator to JSON data
 			structureData.put("name", structure.getStructureName());
 			structureData.put("creator", structure.getOwnerName());
-			data.add(structureData);
+			data.put(structureData);
 		}
 		
 		dataObject.put("structures", data);
 		
-		return dataObject.toJSONString();
+		return dataObject.toString();
 	}
 }
