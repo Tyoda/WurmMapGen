@@ -2,7 +2,7 @@ package be.woubuc.wurmunlimited.wurmmapgen.filegen;
 
 import be.woubuc.wurmunlimited.wurmmapgen.Logger;
 import be.woubuc.wurmunlimited.wurmmapgen.WurmMapGen;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import java.nio.file.Paths;
 
@@ -62,6 +62,6 @@ public final class ConfigFileGen extends FileGen {
 		
 		configObject.put("config", config);
 		
-		return configObject.toJSONString();
+		return configObject.toString();
 	}
 }
